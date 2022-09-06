@@ -3,24 +3,26 @@
 #Informes de Aprender desde Casa
 #esteban.motta@duea.edu.co
 
-direccion_reg <- "D:/Proyectos/Programacion/RFiles/UdeArroba_Informes_ADC/6Junio/reg_06_16_2022_ADC.csv"
-direccion_par <- "D:/Proyectos/Programacion/RFiles/UdeArroba_Informes_ADC/6Junio/par_06_16_2022_ADC.csv"
+direccion_reg <- "dirección"
+direccion_par <- "dirección"
 
-nombre_arch <- "D:/Proyectos/Programacion/RFiles/UdeArroba_Informes_ADC/6Junio/Reporte_06_16_2022_ADC.xlsx"
+nombre_arch <- "dirección"
 
 Editar.Reporte.ADC <- function(d1, d2, nom){
   
-  dir1 <- read.csv(d1, encoding = "UTF-8")
-  dir2 <- read.csv(d2, encoding = "UTF-8")
+  dir1 <- read.csv(file = d1,
+                   encoding = "UTF-8")
+  dir2 <- read.csv(file = d2,
+                   encoding = "UTF-8")
   
   library(stringr)
   
   for (i in 1:length(dir1)) {
-    dir1[i] <- str_replace_all(dir1[, i], " ", " ")
+       dir1[i] <- str_replace_all(dir1[, i], " ", " ")
   }
   
   for (i in 1:length(dir2)) {
-        dir2[i] <- str_replace_all(dir2[, i], " ", " ")
+       dir2[i] <- str_replace_all(dir2[, i], " ", " ")
   }
   
   asist <- rep(1, times = length(dir1[, 1]))
