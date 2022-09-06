@@ -4,9 +4,9 @@
 #esteban.motta@udea.edu.co
 
 
-direccion_docs_reg <- "D:/Proyectos/Programacion/RFiles/UdeArroba_Informes_ADC/Archivos2022/reg"
-direccion_docs_par <- "D:/Proyectos/Programacion/RFiles/UdeArroba_Informes_ADC/Archivos2022/par"
-nombre_archivo_final <- "D:/Proyectos/Programacion/RFiles/UdeArroba_Informes_ADC/Archivos2022/Merge_ADC_2022.xlsx"
+direccion_docs_reg <- "Dirección"
+direccion_docs_par <- "Dirección"
+nombre_archivo_final <- "Dirección"
 
 consolidados <- function(d1, d2, nom){
   
