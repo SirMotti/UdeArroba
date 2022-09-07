@@ -1,7 +1,7 @@
-#Esteban Motta Ruiz - Auxiliar de Porgramación en Ude@
-#Edición de informes de Zoom - 28 de Octubre de 2021
-#Informes de Aprender desde Casa
-#esteban.motta@duea.edu.co
+# Esteban Motta Ruiz - Auxiliar de Porgramación en Ude@
+# Edición de informes de Zoom - 28 de Octubre de 2021
+# Informes de Aprender desde Casa
+# esteban.motta@duea.edu.co
 
 direccion_reg <- "D:/Proyectos/Programacion/RFiles/UdeArroba_Informes_ADC/6Junio/reg_06_16_2022_ADC.csv"
 direccion_par <- "D:/Proyectos/Programacion/RFiles/UdeArroba_Informes_ADC/6Junio/par_06_16_2022_ADC.csv"
