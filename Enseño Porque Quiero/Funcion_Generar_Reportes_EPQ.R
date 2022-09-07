@@ -1,7 +1,7 @@
-#Esteban Motta Ruiz - Auxiliar de Porgramación en Ude@
-#Edición de informes de Zoom - 13 de Septiembre de 2021
-#Informes de Enseño Porque Quiero
-#esteban.motta@udea.edu.co
+# Esteban Motta Ruiz - Auxiliar de Porgramación en Ude@
+# Edición de informes de Zoom - 13 de Septiembre de 2021
+# Informes de Enseño Porque Quiero
+# esteban.motta@udea.edu.co
 
 direccion <- "D:/Proyectos/Programacion/RFiles/UdeArroba_Informes_EPQ/8Agosto/07_28_2022_AEUP.csv"
 
