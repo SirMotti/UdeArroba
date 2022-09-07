@@ -1,7 +1,7 @@
-#Esteban Motta Ruiz - Auxiliar de Porgramación en Ude@
-#Consolidados de informes de Zoom - 18 de mayo de 2022
-#Consolidados de participación Enseño Porque Quiero
-#esteban.motta@udea.edu.co
+# Esteban Motta Ruiz - Auxiliar de Porgramación en Ude@
+# Consolidados de informes de Zoom - 18 de mayo de 2022
+# Consolidados de participación Enseño Porque Quiero
+# esteban.motta@udea.edu.co
 
 
 direccion_docs_reg <- "D:/Proyectos/Programacion/RFiles/UdeArroba_Informes_ADC/Archivos2022/reg"
