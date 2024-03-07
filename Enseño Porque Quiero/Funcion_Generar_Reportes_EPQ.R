@@ -1,15 +1,15 @@
 # Esteban Motta Ruiz - Auxiliar de Porgramación en Ude@
-# Edición de informes de Zoom - 13 de Septiembre de 2021
+# Edición de informes de Zoom - 6 de Marzo de 2024
 # Informes de Enseño Porque Quiero
 # esteban.motta@udea.edu.co
 
-direccion <- "D:/Proyectos/Programacion/RFiles/UdeArroba_Informes_EPQ/8Agosto/07_28_2022_AEUP.csv"
+direccion <- "/ast.csv"
 
-nombre_arch <- "D:/Proyectos/Programacion/RFiles/UdeArroba_Informes_EPQ/8Agosto/Reporte_07_28_2022_AEUP.xlsx"
+nombre_arch <- "/reporte.xlsx"
 
 Editar.Reporte.EPQ <- function(dir, nom){
   
-  Rep_Ast <- read.csv(file = direccion,
+  Rep_Ast <- read.csv(file = dir,
                       encoding = "UTF-8",
                       header = FALSE)
   
@@ -21,8 +21,14 @@ Editar.Reporte.EPQ <- function(dir, nom){
        Rep_Ast_dt[i] <- str_replace_all(Rep_Ast_dt[, i], " ", " ")
   }
   
-  colnom <- c("Asist", "Reg.Nombre", "Nombre", "Apellido", "Correo", "Estado",
-              "Vinculacion", "Unidad")
+  colnom <- c("Asist",
+              "Reg.Nombre",
+              "Nombre",
+              "Apellido",
+              "Correo",
+              "Estado",
+              "Vinculacion",
+              "Unidad")
   
   names(Rep_Ast_dt) <- colnom
   
@@ -54,45 +60,22 @@ Editar.Reporte.EPQ <- function(dir, nom){
                        data = Rep_Ast_fn_1,
                        FUN = sum)
   
-  library(xlsx)
+  library(openxlsx)
   
-  write.xlsx(Rep_Ast_fn,
-             nombre_arch,
-             sheetName = "Reporte General",
-             col.names = TRUE,
-             row.names = FALSE,
-             append = TRUE)
+  finales <- list("Reporte General" = Rep_Ast_fn,
+                  "Inscritos por Unidad" = Ins_Und[-1, ],
+                  "Inscritos por Vinculación" = Ins_Vin[-1, ],
+                  "Asistentes por Unidad" = Ast_Und[-1, ],
+                  "Asistentes por Vinculación" = Ast_Vin[-1, ])
   
-  write.xlsx(Ins_Und[-1, ],
-             nombre_arch,
-             sheetName = "Inscritos por Unidad",
-             col.names = TRUE,
-             row.names = FALSE,
-             append = TRUE)
+  write.xlsx(finales,
+             nom,
+             colNames = TRUE,
+             rowNames = FALSE,
+             overwrite = TRUE)
   
-  write.xlsx(Ins_Vin[-1, ],
-             nombre_arch,
-             sheetName = "Inscritos por Vinculación",
-             col.names = TRUE,
-             row.names = FALSE,
-             append = TRUE)
   
-  write.xlsx(Ast_Und[-1, ],
-             nombre_arch,
-             sheetName = "Asistentes por Unidad",
-             col.names = TRUE,
-             row.names = FALSE,
-             append = TRUE)
-  
-  write.xlsx(Ast_Vin[-1, ],
-             nombre_arch,
-             sheetName = "Asistentes por Vinculación",
-             col.names = TRUE,
-             row.names = FALSE,
-             append = TRUE)
 }
 
 Editar.Reporte.EPQ(dir = direccion,
                    nom = nombre_arch)
-
-
