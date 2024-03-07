@@ -1,0 +1,110 @@
+# Esteban Motta Ruiz
+# Consolidados de informes de Zoom - 6 de Marzo de 2024
+# Consolidados de participación Somos Familia UdeA
+# esteban.motta@udea.edu.co
+
+
+direccion_reg <- "/reg.csv"
+direccion_par <- "/par.csv"
+
+nombre_arch <- "/Reporte.xlsx"
+
+Editar_Reporte_SFUdeA <- function(d1, d2, nom){
+    
+    dir1 <- read.csv(d1, encoding = "UTF-8")
+    dir2 <- read.csv(d2, encoding = "UTF-8")
+    
+    library(stringr)
+    
+    for (i in 1:length(dir1)) {
+        dir1[i] <- str_replace_all(dir1[, i], " ", " ")
+    }
+    
+    for (i in 1:length(dir2)) {
+        dir2[i] <- str_replace_all(dir2[, i], " ", " ")
+    }
+    
+    asist <- rep(1, times = length(dir1[, 1]))
+    ins <- subset.data.frame(dir1[, c(1, 2, 3, 6, 7, 8, 9, 10)])
+    ins_dt <- cbind(asist, ins)
+    
+    colnom1 <- c("Asist",
+                 "Nombre",
+                 "Apellido",
+                 "Correo",
+                 "Vinculacion",
+                 "Unidad",
+                 "Familia",
+                 "Niños",
+                 "Tema")
+    
+    colnames(ins_dt) <- colnom1
+    
+    ins_dt$Correo <- tolower(ins_dt$Correo)
+    
+    ast <- subset.data.frame(dir2[, c(1, 2)])
+    
+    colnom2 <- c("Nombre", "Correo")
+    colnames(ast) <- colnom2
+    
+    ast_dt <- merge(x = ins_dt,
+                    y = ast,
+                    by = "Correo")
+    
+    ins_vin <- aggregate(Asist ~ Vinculacion,
+                         data = ins_dt,
+                         FUN = sum)
+    ins_uni <- aggregate(Asist ~ Unidad,
+                         data = ins_dt,
+                         FUN = sum)
+    
+    ast_vin <- aggregate(Asist ~ Vinculacion,
+                         data = ast_dt,
+                         FUN = sum)
+    ast_uni <- aggregate(Asist ~ Unidad,
+                         data = ast_dt,
+                         FUN = sum)
+    
+    ast_dt2 <- ast_dt[, 1:9]
+    colnames(ast_dt2)[3] <- "Nombre"
+    ast_dt2$Asist <- "1"
+    
+    no_ast <- data.frame(Correo = setdiff(ins_dt$Correo, ast_dt2$Correo))
+    no_ast_dt <- merge(x = ins_dt,
+                       y = no_ast,
+                       by.x = "Correo",
+                       by.y = "Correo")
+    
+    no_ast_dt$Asist <- "0"
+    
+    general <- rbind(ast_dt2, no_ast_dt)
+    general <- general[c(2, 3, 4, 1, 5, 6, 7, 8, 9)]
+    general$Asist <- as.numeric(general$Asist)
+    
+    ninos <- data.frame(table(general$Niños))
+    colnames(ninos) <- c("Respuesta", "Cantidad")
+    
+    familia <- data.frame(table(ins_dt$Familia))
+    colnames(familia) <- c("Respuesta", "Cantidad")
+    
+    library(openxlsx)
+    
+    finales <- list("Reporte General" = general,
+                    "Ins Vinculacion" = ins_vin,
+                    "Ins Unidad" = ins_uni,
+                    "Ast Vinculacion" = ast_vin,
+                    "Ast Unidad" = ast_uni,
+                    "Familia" = familia,
+                    "Niños" = ninos)
+    
+    
+    write.xlsx(finales,
+               nom,
+               colNames = TRUE,
+               rowNames = FALSE)
+    
+}
+
+Editar_Reporte_SFUdeA(d1 = direccion_reg,
+                      d2 = direccion_par,
+                      nom = nombre_arch)
