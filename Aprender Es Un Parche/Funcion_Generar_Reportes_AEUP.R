@@ -1,41 +1,54 @@
 # Esteban Motta Ruiz - Auxiliar de Porgramación en Ude@
-# Edición de informes de Zoom - 28 de Octubre de 2021
+# Edición de informes de Zoom - 6 de Marzo de 2024
 # Informes de Aprender desde Casa
 # esteban.motta@duea.edu.co
 
-direccion_reg <- "D:/Proyectos/Programacion/RFiles/UdeArroba_Informes_ADC/6Junio/reg_06_16_2022_ADC.csv"
-direccion_par <- "D:/Proyectos/Programacion/RFiles/UdeArroba_Informes_ADC/6Junio/par_06_16_2022_ADC.csv"
+direccion_reg <- "/reg.csv"
+direccion_par <- "/par.csv"
 
-nombre_arch <- "D:/Proyectos/Programacion/RFiles/UdeArroba_Informes_ADC/6Junio/Reporte_06_16_2022_ADC.xlsx"
+nombre_arch <- "/ejemplo.xlsx"
 
 Editar.Reporte.ADC <- function(d1, d2, nom){
   
-  dir1 <- read.csv(d1, encoding = "UTF-8")
-  dir2 <- read.csv(d2, encoding = "UTF-8")
+  dir1 <- read.csv(d1,
+                   encoding = "UTF-8")
+  dir2 <- read.csv(d2,
+                   encoding = "UTF-8")
   
   library(stringr)
   
   for (i in 1:length(dir1)) {
-       dir1[i] <- str_replace_all(dir1[, i], " ", " ")
+       dir1[i] <- str_replace_all(string = dir1[, i],
+                                  pattern = " ",
+                                  replacement = " ")
   }
   
   for (i in 1:length(dir2)) {
-       dir2[i] <- str_replace_all(dir2[, i], " ", " ")
+       dir2[i] <- str_replace_all(string = dir2[, i],
+                                  pattern = " ",
+                                  replacement = " ")
   }
   
-  asist <- rep(1, times = length(dir1[, 1]))
+  asist <- rep(x = 1,
+               times = length(dir1[, 1]))
   ins <- subset.data.frame(dir1[, c(1, 2, 3, 6, 7, 8)])
   ins_dt <- cbind(ins, asist)
   
-  colnom1 <- c("Nombre", "Apellido", "Correo", "Programa", "Dependencia",
-               "Vinculacion", "Asist")
+  colnom1 <- c("Nombre",
+               "Apellido",
+               "Correo",
+               "Programa",
+               "Dependencia",
+               "Vinculacion",
+               "Asist")
   colnames(ins_dt) <- colnom1
   
   ins_dt$Correo <- tolower(ins_dt$Correo)
-
+  
   ast <- subset.data.frame(dir2[, c(1, 2)])
   
-  colnom2 <- c("Nombre", "Correo")
+  colnom2 <- c("Nombre",
+               "Correo")
   colnames(ast) <- colnom2
   
   ast_dt <- merge(x = ins_dt,
@@ -66,7 +79,8 @@ Editar.Reporte.ADC <- function(d1, d2, nom){
   colnames(ast_dt2)[2] <- "Nombre"
   ast_dt2$Asist <- "1"
   
-  no_ast <- data.frame(Correo = setdiff(ins_dt$Correo, ast_dt2$Correo))
+  no_ast <- data.frame(Correo = setdiff(ins_dt$Correo,
+                                        ast_dt2$Correo))
   no_ast_dt <- merge(x = ins_dt,
                      y = no_ast,
                      by.x = "Correo",
@@ -77,57 +91,23 @@ Editar.Reporte.ADC <- function(d1, d2, nom){
   general <- rbind(ast_dt2, no_ast_dt)
   general <- general[c(7, 2, 3, 1, 4, 5, 6)]
   general$Asist <- as.numeric(general$Asist)
-
-  library(xlsx)
   
-  write.xlsx(general,
-             nom,
-             sheetName = "Reporte General",
-             col.names = TRUE,
-             row.names = FALSE,
-             append = TRUE)
+  library(openxlsx)
   
-  write.xlsx(ins_prog,
-             nom,
-             sheetName = "Ins Programa",
-             col.names = TRUE,
-             row.names = FALSE,
-             append = TRUE)
+  finales <- list("Reporte General" = general,
+                  "Ins Programa" = ins_prog,
+                  "Ins Dependencia" = ins_dep,
+                  "Ins Vinculacion" = ins_vin,
+                  "Ast Programa" = ast_prog,
+                  "Ast Dependencia" = ast_dep,
+                  "Ast Vinculacion" = ast_vin)
   
-  write.xlsx(ins_dep,
+  write.xlsx(finales,
              nom,
-             sheetName = "Ins Dependencia",
-             col.names = TRUE,
-             row.names = FALSE,
-             append = TRUE)
+             colNames = TRUE,
+             rowNames = FALSE,
+             overwrite = TRUE)
   
-  write.xlsx(ins_vin,
-             nom,
-             sheetName = "Ins Vinculacion",
-             col.names = TRUE,
-             row.names = FALSE,
-             append = TRUE)
-  
-  write.xlsx(ast_prog,
-             nom,
-             sheetName = "Ast Programa",
-             col.names = TRUE,
-             row.names = FALSE,
-             append = TRUE)
-  
-  write.xlsx(ast_dep,
-             nom,
-             sheetName = "Ast Dependencia",
-             col.names = TRUE,
-             row.names = FALSE,
-             append = TRUE)
-  
-  write.xlsx(ast_vin,
-             nom,
-             sheetName = "Ast Vinculacion",
-             col.names = TRUE,
-             row.names = FALSE,
-             append = TRUE)
 }
 
 Editar.Reporte.ADC(d1 = direccion_reg,
