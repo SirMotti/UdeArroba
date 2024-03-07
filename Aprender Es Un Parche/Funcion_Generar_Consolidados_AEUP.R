@@ -4,9 +4,9 @@
 # esteban.motta@udea.edu.co
 
 
-direccion_docs_reg <- "D:/Proyectos/Programacion/RFiles/UdeArroba_Informes_ADC/Archivos2022/reg"
-direccion_docs_par <- "D:/Proyectos/Programacion/RFiles/UdeArroba_Informes_ADC/Archivos2022/par"
-nombre_archivo_final <- "D:/Proyectos/Programacion/RFiles/UdeArroba_Informes_ADC/Archivos2022/Merge_ADC_2022.xlsx"
+direccion_docs_reg <- "/reg"
+direccion_docs_par <- "/par"
+nombre_archivo_final <- "consolidado.xlsx"
 
 consolidados <- function(d1, d2, nom){
   
@@ -190,49 +190,20 @@ consolidados <- function(d1, d2, nom){
                           how = "replace" )
   
   
-  library(xlsx)
+  library(openxlsx)
   
-  write.xlsx(lista_Prog_cons[[1]],
-             nom,
-             sheetName = "Consolidado_Inscritos_Programa",
-             col.names = TRUE,
-             row.names = FALSE,
-             append = TRUE)
+  finales <- list("Consolidado_Inscritos_Programa" = lista_Prog_cons[[1]],
+                  "Consolidado_Asistentes_Programa" = lista_Prog_cons[[2]],
+                  "Consolidado_Inscritos_Dependencia" = lista_Dep_cons[[1]],
+                  "Consolidado_Asistentes_Dependencia" = lista_Dep_cons[[2]],
+                  "Consolidado_Inscritos_Vinculacion" = lista_Vin_cons[[1]],
+                  "Consolidado_Asistentes_Vinculacion" = lista_Vin_cons[[2]])
   
-  write.xlsx(lista_Prog_cons[[2]],
+  write.xlsx(finales,
              nom,
-             sheetName = "Consolidado_Asistentes_Programa",
-             col.names = TRUE,
-             row.names = FALSE,
-             append = TRUE)
-  
-  write.xlsx(lista_Dep_cons[[1]],
-             nom,
-             sheetName = "Consolidado_Inscritos_Dependencia",
-             col.names = TRUE,
-             row.names = FALSE,
-             append = TRUE)
-  
-  write.xlsx(lista_Dep_cons[[2]],
-             nom,
-             sheetName = "Consolidado_Asistentes_Dependencia",
-             col.names = TRUE,
-             row.names = FALSE,
-             append = TRUE)
-  
-  write.xlsx(lista_Vin_cons[[1]],
-             nom,
-             sheetName = "Consolidado_Inscritos_Vinculacion",
-             col.names = TRUE,
-             row.names = FALSE,
-             append = TRUE)
-  
-  write.xlsx(lista_Vin_cons[[2]],
-             nom,
-             sheetName = "Consolidado_Asistentes_Vinculacion",
-             col.names = TRUE,
-             row.names = FALSE,
-             append = TRUE)
+             colNames = TRUE,
+             rowNames = FALSE,
+             overwrite = TRUE)
   
 }
 
