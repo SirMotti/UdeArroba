@@ -1,11 +1,11 @@
 # Esteban Motta Ruiz - Auxiliar de Porgramación en Ude@
-# Consolidados de informes de Zoom - 23 de marzo de 2022
+# Consolidados de informes de Zoom - 6 de marzo de 2024
 # Consolidados de participación Enseño Porque Quiero
 # esteban.motta@udea.edu.co
 
 
-direccion_docs <- "D:/Proyectos/Programacion/RFiles/UdeArroba_Informes_EPQ/Reportes_Zoom_EPQ_2022"
-nombre_archivo_final <- "D:/Proyectos/Programacion/RFiles/UdeArroba_Informes_EPQ/Consolidado_EPQ_07282022.xlsx"
+direccion_docs <- "/Reportes"
+nombre_archivo_final <- "/Consolidado.xlsx"
 
 consolidados_EPQ <- function(d1, nom){
   
@@ -27,11 +27,22 @@ consolidados_EPQ <- function(d1, nom){
        Rep_Ins_file_dt <- subset.data.frame(reportes_zoom[[p]][-1, -c(6, 8, 9, 10, 11, 14, 15)])
         
        library(stringr)
+       
        for (i in 1:length(Rep_Ins_file_dt)) {
+           
             Rep_Ins_file_dt[i] <- str_replace_all(Rep_Ins_file_dt[, i], " ", " ")
+       
        }
         
-       colnom <- c("Asist", "Reg.Nombre", "Nombre", "Apellido", "Correo", "Estado", "Vinculacion", "Unidad")
+       colnom <- c("Asist",
+                   "Reg.Nombre",
+                   "Nombre",
+                   "Apellido",
+                   "Correo",
+                   "Estado",
+                   "Vinculacion",
+                   "Unidad")
+       
        names(Rep_Ins_file_dt) <- colnom
        
        Rep_Ins_file_dt$Asist[Rep_Ins_file_dt$Asist == "Sí"] <- 1
@@ -45,19 +56,19 @@ consolidados_EPQ <- function(d1, nom){
                            select = c(Asist, Vinculacion, Unidad))
        Ins_total$Asist <- 1
        
-       lista_Ins_Vin[[p]] <- aggregate(Asist~Vinculacion,
+       lista_Ins_Vin[[p]] <- aggregate(Asist ~ Vinculacion,
                                        data = Ins_total,
                                        FUN = sum)
-       lista_Ins_Und[[p]] <- aggregate(Asist~Unidad,
+       lista_Ins_Und[[p]] <- aggregate(Asist ~ Unidad,
                                        data = Ins_total,
                                        FUN = sum)
        
        Rep_Ast_file_fn <- Rep_Ins_file_fn[Rep_Ins_file_fn$Asist > 0, ]
        
-       lista_Ast_Vin[[p]] <- aggregate(Asist~Vinculacion,
+       lista_Ast_Vin[[p]] <- aggregate(Asist ~ Vinculacion,
                                        data = Rep_Ast_file_fn[-c(1, 2), ],
                                        FUN = sum)
-       lista_Ast_Und[[p]] <- aggregate(Asist~Unidad,
+       lista_Ast_Und[[p]] <- aggregate(Asist ~ Unidad,
                                        data = Rep_Ast_file_fn[-c(1, 2), ],
                                        FUN = sum)
     
@@ -116,41 +127,22 @@ consolidados_EPQ <- function(d1, nom){
                           how = "replace" )
   
   
-  library(xlsx)
+  library(openxlsx)
   
-  write.xlsx(lista_Und_cons[[1]],
-             nom,
-             sheetName = "Consolidado_Inscritos_Unidad",
-             col.names = TRUE,
-             row.names = FALSE,
-             append = TRUE)
+  finales <- list("Consolidado_Inscritos_Unidad" = lista_Und_cons[[1]],
+                  "Consolidado_Asistentes_Unidad" = lista_Und_cons[[2]],
+                  "Consolidado_Inscritos_Vinculacion" = lista_Vin_cons[[1]],
+                  "Consolidado_Asistentes_Vinculacion" = lista_Vin_cons[[2]])
   
-  write.xlsx(lista_Und_cons[[2]],
+  write.xlsx(finales,
              nom,
-             sheetName = "Consolidado_Asistentes_Unidad",
-             col.names = TRUE,
-             row.names = FALSE,
-             append = TRUE)
+             colNames = TRUE,
+             rowNames = FALSE,
+             overwrite = TRUE)
   
-  write.xlsx(lista_Vin_cons[[1]],
-             nom,
-             sheetName = "Consolidado_Inscritos_Vinculacion",
-             col.names = TRUE,
-             row.names = FALSE,
-             append = TRUE)
-  
-  write.xlsx(lista_Vin_cons[[2]],
-             nom,
-             sheetName = "Consolidado_Asistentes_Vinculacion",
-             col.names = TRUE,
-             row.names = FALSE,
-             append = TRUE)
   
 }
 
 consolidados_EPQ(d1 = direccion_docs,
                  nom = nombre_archivo_final)
-
-
-
 
